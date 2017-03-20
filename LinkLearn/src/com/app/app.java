@@ -7,9 +7,9 @@ public class app {
 */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        /*¼òµ¥ÊµÏÖÒ»¸öÊ÷µÄ½á¹¹£¬ºóĞøÍêÉÆ½âÎöxml             */
-        /*Ğ´µÃÂúÀÃµÄ£¬ºóĞø²éÔÄÒ»Ğ©ÆäËû´úÂë                2012-3-12    */
-        //²âÊÔ
+        /*ç®€å•å®ç°ä¸€ä¸ªæ ‘çš„ç»“æ„ï¼Œåç»­å®Œå–„è§£æxml             */
+        /*å†™å¾—æ»¡çƒ‚çš„ï¼Œåç»­æŸ¥é˜…ä¸€äº›å…¶ä»–ä»£ç                 2012-3-12    */
+        //æµ‹è¯•
         /*
          * string
          *         hello
@@ -29,7 +29,7 @@ public class app {
         tree.addNode(tree.getNode("world"), "Hi");
         tree.addNode(tree.getNode("world"), "York");
         tree.showNode(tree.root);
-        
+        System.out.println("æ ¹èŠ‚ç‚¹ï¼š"+tree.getrootNode().toString());
         System.out.println("end of the test");
     }
 

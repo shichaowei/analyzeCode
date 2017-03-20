@@ -7,7 +7,7 @@ public class tree<T> {
     public tree(){}
         
     public void addNode(treeNode<T> node, T newNode){
-        //Ôö¼Ó¸ù½Úµã
+        //å¢åŠ æ ¹èŠ‚ç‚¹
         if(null == node){
             if(null == root){
                 root = new treeNode(newNode);
@@ -18,7 +18,7 @@ public class tree<T> {
         }
     }
     
-    /*    ²éÕÒnewNodeÕâ¸ö½Úµã */
+    /*    æŸ¥æ‰¾newNodeè¿™ä¸ªèŠ‚ç‚¹ */
     public treeNode<T> search(treeNode<T> input, T newNode){
     
         treeNode<T> temp = null;
@@ -43,14 +43,21 @@ public class tree<T> {
         return search(root, newNode);
     }
     
+    public T getrootNode(){
+    	return this.root.t;
+    }
+    
     public void showNode(treeNode<T> node){
-        if(null != node){
-            //Ñ­»·±éÀúnodeµÄ½Úµã
+        
+    	if(null != node){
+            //å¾ªç¯éå†nodeçš„èŠ‚ç‚¹
             System.out.println(node.t.toString());
             
+
             for(int i = 0; i < node.nodelist.size(); i++){
-                showNode(node.nodelist.get(i));
+            	showNode(node.nodelist.get(i));
             }            
+
         }
     }
 }
