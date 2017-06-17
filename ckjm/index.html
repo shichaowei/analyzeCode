@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- No not edit this page in the web directory. -->
+<!-- $Id: \\dds\\src\\Research\\ckjm.RCS\\index.html,v 1.12 2010/05/22 10:27:16 dds Exp $ -->
+<head>
+<title>ckjm &mdash; Chidamber and Kemerer Java Metrics</title>
+<meta name="AUTHOR" content="Diomidis Spinellis" />
+</head>
+<body>
+<a href="https://github.com/dspinellis/ckjm"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a><br /><br /><br /><br />
+<h1 align="right"><tt><font color="#ff0000">ckjm dds</font></tt></h1>
+<h2>ckjm &mdash; Chidamber and Kemerer Java Metrics</h2>
+ <!-- Introduction {{{1 -->
+<p>
+<img src="smallpic.jpg" alt="Picture of the Java book, the metrics paper, and a measure tape" align="right" hspace="20" />
+The program <em>ckjm</em> calculates Chidamber and Kemerer object-oriented
+metrics by processing the bytecode of compiled Java files.
+The program calculates for each class the following six metrics proposed
+by Chidamber and Kemerer.
+</p>
+<ul>
+<li>WMC: Weighted methods per class</li>
+<li>DIT: Depth of Inheritance Tree</li>
+<li>NOC: Number of Children</li>
+<li>CBO: Coupling between object classes</li>
+<li>RFC: Response for a Class</li>
+<li>LCOM: Lack of cohesion in methods</li>
+</ul>
+<p>
+In addition it also calculates for each class
+</p>
+<ul>
+<li>Ca: Afferent couplings</li>
+<li>NPM: Number of public methods</li>
+</ul>
+<h3>Citation and Background</h3>
+<p>
+If you use this tool in your research, please cite it as follows.<br />
+Diomidis Spinellis.
+<a href="http://www.dmst.aueb.gr/dds/pubs/jrnl/2005-IEEESW-TotT/html/v22n4.html">Tool writing: A forgotten art?</a>
+<cite>IEEE Software</cite>, 22(4):9&ndash;11, July/August 2005.
+(<a href="http://dx.doi.org/10.1109/MS.2005.111">doi:10.1109/MS.2005.111</a>).
+</p>
+<p>
+I wrote this program out of frustration over the
+<a href="http://www.spinellis.gr/blog/20050211/">lack</a>
+of reliable programs to calculate the
+Chidamber and Kemerer object-oriented metrics I needed
+to illustrate some concepts in my book
+<a href="http://www.spinellis.gr/codequality">Code Quality: The Open Source Perspective</a>.
+The programs I found on the web were either
+incomplete (they calculated only some of the metrics),
+or unreliable (they calculated results that were obviously wrong),
+or extremely inefficient (they required GB of RAM and hours of processing).
+<em>Ckjm</em> is mean and lean, following the Unix tradition of doing
+one thing well.
+It will not automatically recurse directories looking for the files
+you want measured and it does not offer a GUI.
+However, it does this job thoroughly, and efficiently:
+on a 1.6GHz Pentium-M machine it will process the 33MB of the Eclipse 3.0
+jar files (19717 classes) in 95 seconds.
+</p>
+<h3>Getting Started</h3>
+<p>
+To run the program you simply specify the class files
+(or pairs of jar/class files)
+on its command line or standard input.
+The program will produce on its standard output a line for each class
+containing the complete name of the class and the values of its metrics.
+This operation model allows the tool to be easilly extended using textual
+pre- and post-processors.
+</p>
+<p>
+From version 1.2 and onward <em>ckjm</em> can be used as an
+ant task, and can also directly generate XML output.
+You can post-process the XML output with XSLT to generate nice-looking
+reports.
+Here is a report example using
+<a href="output_simple.html">simple report style</a>
+and here is an example using the
+<a href="output_extra.html">fancy report style</a>.
+XSL files for both report styles are part of the distribution.
+</p>
+
+
+
+<h3>Download and Links</h3> <!-- {{{1 -->
+Ckjm is hereby made freely available as Open Source Software.
+The current version of ckjm is VERSION.
+You can download ckjm and its documentation from the following links:
+<ul>
+<li> <a href="ckjm-VERSION.tar.gz">ckjm package - .tar.gz</a>
+(compressed tar file containing the source code, the compiled jar file,
+and the complete documentation in HTML format).
+</li>
+<li> <a href="https://github.com/dspinellis/ckjm">GitHub page</a>
+(use it to obtain the latest version,
+track progress,
+report issues,
+and contribute improvements).
+</li>
+<li> <a href="ckjm-VERSION.zip">ckjm package - .zip</a>
+(zip file containing the source code, the compiled doclet,
+and the complete documentation in HTML format).
+</li>
+<li> <a href="doc/index.html">User documentation</a>
+(table of contents - suitable for web browsing).
+</li>
+<li> <a href="doc/indexw.html">Printable user documentation</a>
+(the above as a single printable page).
+</li>
+<li> <a href="javadoc/index.html">Technical documentation</a>
+(javadoc) and
+<a href="javadoc/gr/spinellis/ckjm/ckjm.gif">UML class diagram</a>
+(by <a href="../umlgraph">UMLGraph</a>).
+</li>
+<li> <a href="doc/ver.html">Version history</a> </li>
+<!-- <li> <a href="http://freshmeat.net/projects/ckjm/">freshmeat.net page</a> (use it to subscribe and post comments)</li> -->
+</ul>
+
+<h3>Projects Using ckjm</h3> <!-- {{{1 -->
+<p>
+<em>ckjm</em> is now also available through the following projects.
+<ul>
+<li>As part of the
+<a href="http://docs.codehaus.org/display/SONAR/Isotrol+MetricsAnalytics">Isotrol MetricAnalytics plugin</a>
+for the <a href="http://sonar.codehaus.org/">Sonar</a>
+open source quality management platform.</li>
+<li> As a <a href="http://mojo.codehaus.org/ckjm-maven-plugin/">Maven plugin</a>.</li>
+<li> As a <a href="http://bitbucket.org/mfriedenhagen/ckjm-maven-plugin">forked Maven plugin</a> with <a href="http://s312195779.online.de/hudson/job/ckjm-maven-plugin/">improved output</a>.</li>
+</ul>
+</p>
+<!-- End matter {{{1 -->
+<p />
+<a href="../../">Diomidis Spinellis home page</a>
+<hr />
+<table>
+<tr><td>
+<a href="http://validator.w3.org/check/referer"><img src="../../valid-xhtml10.png" border="0" alt="Valid XHTML 1.0!" height="31" width="88" /></a>
+<a href="http://www.w3.org/WAI/WCAG1AAA-Conformance" title="Explanation of Level Triple-A Conformance"><img border="0" height="32" width="88" src="../../wcag1AAA.gif" alt="Level Triple-A conformance icon, W3C-WAI Web Content Accessibility Guidelines 1.0" /></a>
+</td><td>
+<font size="-2">
+(C) Copyright 2005-2010 D. Spinellis.
+May be freely uploaded by WWW viewers and similar programs.
+All other rights reserved.
+<br />
+Last modified: $Date: 2010/05/22 10:27:16 $
+</font>
+</td></tr>
+</table>
+</body>
+</html>
