@@ -16,10 +16,26 @@
 
 package gr.spinellis.ckjm;
 
-import org.apache.bcel.generic.*;
+import java.util.ArrayList;
+
 import org.apache.bcel.Constants;
-import org.apache.bcel.util.*;
-import java.util.*;
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.generic.ArrayInstruction;
+import org.apache.bcel.generic.CHECKCAST;
+import org.apache.bcel.generic.CodeExceptionGen;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.ConstantPushInstruction;
+import org.apache.bcel.generic.EmptyVisitor;
+import org.apache.bcel.generic.FieldInstruction;
+import org.apache.bcel.generic.INSTANCEOF;
+import org.apache.bcel.generic.Instruction;
+import org.apache.bcel.generic.InstructionConstants;
+import org.apache.bcel.generic.InstructionHandle;
+import org.apache.bcel.generic.InvokeInstruction;
+import org.apache.bcel.generic.LocalVariableInstruction;
+import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.ReturnInstruction;
+import org.apache.bcel.generic.Type;
 
 /**
  * Visit a method calculating the class's Chidamber-Kemerer metrics.
@@ -53,7 +69,9 @@ class MethodVisitor extends EmptyVisitor {
 	    for (InstructionHandle ih = mg.getInstructionList().getStart();
 		 ih != null; ih = ih.getNext()) {
 		Instruction i = ih.getInstruction();
-
+		
+		
+		  
 		if(!visitInstruction(i))
 		    i.accept(this);
 	    }
@@ -71,47 +89,86 @@ class MethodVisitor extends EmptyVisitor {
     }
 
     /** Local variable use. */
-    public void visitLocalVariableInstruction(LocalVariableInstruction i) {
+    @Override
+	public void visitLocalVariableInstruction(LocalVariableInstruction i) {
 	if(i.getOpcode() != Constants.IINC)
 	    cv.registerCoupling(i.getType(cp));
     }
 
     /** Array use. */
-    public void visitArrayInstruction(ArrayInstruction i) {
+    @Override
+	public void visitArrayInstruction(ArrayInstruction i) {
 	cv.registerCoupling(i.getType(cp));
     }
 
     /** Field access. */
-    public void visitFieldInstruction(FieldInstruction i) {
+    @Override
+	public void visitFieldInstruction(FieldInstruction i) {
 	cv.registerFieldAccess(i.getClassName(cp), i.getFieldName(cp));
 	cv.registerCoupling(i.getFieldType(cp));
     }
 
     /** Method invocation. */
-    public void visitInvokeInstruction(InvokeInstruction i) {
+    @Override
+	public void visitInvokeInstruction(InvokeInstruction i) {
 	Type[] argTypes   = i.getArgumentTypes(cp);
 	for (int j = 0; j < argTypes.length; j++)
 	    cv.registerCoupling(argTypes[j]);
 	cv.registerCoupling(i.getReturnType(cp));
-	//System.out.println(i.getMethodName(cp));
-	//System.out.println(i.getClassName(cp));
+	String classname=i.getClassName(cp);
+	try {
+		JavaClass superclass=cv.getJavaClass().getSuperClass();
+//		System.out.println(superclass.getClassName());
+		if (!superclass.getClassName().equals("java.lang.Object")&&!superclass.isInterface()) {
+			for (org.apache.bcel.classfile.Method supermethod : superclass.getMethods()) {
+				if (supermethod.getName().equals(i.getMethodName(cp))) {
+					if (supermethod.getName().equals("<init>")) {
+						;
+					} else {
+						if(supermethod.getName().equals(i.getMethodName(cp))){
+							ArrayList<Type> supermethodParams= new ArrayList<>();
+							ArrayList<Type> methodParams= new ArrayList<>();
+							for (Type type : supermethod.getArgumentTypes()) {
+//								System.out.println(type.toString());
+								supermethodParams.add(type);
+							}
+							for (Type type:i.getArgumentTypes(cp)) {
+								methodParams.add(type);
+							}
+							if(supermethodParams.equals(methodParams)){
+								classname=superclass.getClassName();
+							}
+						}
+					}
+				}
+			} 
+		}
+		
+	} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+	}
+//	System.out.println(i.getMethodName(cp)+":"+ mg.getName()+":"+i.getClassName(cp));
+//	System.out.println(i.getClassName(cp));
 	/* Measuring decision: measure overloaded methods separately */
 	cv.registerMethodInvocation(i.getClassName(cp), i.getMethodName(cp), argTypes);
-	cv.registerMethodInvocation(i.getClassName(cp), mg.getName(),i.getMethodName(cp),argTypes);
+	cv.registerMethodInvocation(classname, mg.getName(),i.getMethodName(cp),argTypes);
     }
 
     /** Visit an instanceof instruction. */
-    public void visitINSTANCEOF(INSTANCEOF i) {
+    @Override
+	public void visitINSTANCEOF(INSTANCEOF i) {
 	cv.registerCoupling(i.getType(cp));
     }
 
     /** Visit checklast instruction. */
-    public void visitCHECKCAST(CHECKCAST i) {
+    @Override
+	public void visitCHECKCAST(CHECKCAST i) {
 	cv.registerCoupling(i.getType(cp));
     }
 
     /** Visit return instruction. */
-    public void visitReturnInstruction(ReturnInstruction i) {
+    @Override
+	public void visitReturnInstruction(ReturnInstruction i) {
 	cv.registerCoupling(i.getType(cp));
     }
 

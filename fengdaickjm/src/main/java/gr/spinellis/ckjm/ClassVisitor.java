@@ -16,11 +16,20 @@
 
 package gr.spinellis.ckjm;
 
-import org.apache.bcel.classfile.*;
-import org.apache.bcel.generic.*;
-import org.apache.bcel.Constants;
-import java.util.*;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.TreeSet;
+
+import org.apache.bcel.Constants;
+import org.apache.bcel.classfile.Field;
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.classfile.Method;
+import org.apache.bcel.generic.ArrayType;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.Type;
 
 /**
  * Visit a class updating its Chidamber-Kemerer metrics.
@@ -61,6 +70,10 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 		cmap = classMap;
 		myClassName = jc.getClassName();
 		cm = cmap.getMetrics(myClassName);
+		
+		
+		
+		
 	}
 
 	/** Return the class's metrics container. */
@@ -70,6 +83,10 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 
 	public void start() {
 		visitJavaClass(visitedClass);
+	}
+	
+	public JavaClass getJavaClass(){
+		return visitedClass;
 	}
 
 	/** Calculate the class's metrics based on its elements. */
@@ -190,6 +207,14 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 	/** Called when a method invocation is encountered. */
 	@Override
 	public void visitMethod(Method method) {
+//		System.out.println(visitedClass.getClassName());
+//		System.out.println(visitedClass.getMethods()[0].getName());
+//		try {
+//			System.out.println(visitedClass.getSuperClass().getMethods()[0].getName());
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		MethodGen mg = new MethodGen(method, visitedClass.getClassName(), cp);
 
 		mg.getReturnType();
