@@ -46,148 +46,6 @@ import org.apache.bcel.generic.Type;
  * @author <a href="http://www.spinellis.gr">Diomidis Spinellis</a>
  */
 class MethodVisitor extends EmptyVisitor {
-<<<<<<< HEAD
-	/** Method generation template. */
-	private MethodGen mg;
-	/* The class's constant pool. */
-	private ConstantPoolGen cp;
-	/** The visitor of the class the method visitor is in. */
-	private ClassVisitor cv;
-	/** The metrics of the class the method visitor is in. */
-	private ClassMetrics cm;
-
-	/** Constructor. */
-	MethodVisitor(MethodGen m, ClassVisitor c) {
-		mg  = m;
-		cv = c;
-		cp  = mg.getConstantPool();
-		cm = cv.getMetrics();
-	}
-
-	/** Start the method's visit. */
-	public void start() {
-		if (!mg.isAbstract() && !mg.isNative()) {
-			for (InstructionHandle ih = mg.getInstructionList().getStart();
-					ih != null; ih = ih.getNext()) {
-				Instruction i = ih.getInstruction();
-
-
-
-				if(!visitInstruction(i)) {
-					i.accept(this);
-				}
-			}
-			updateExceptionHandlers();
-		}
-	}
-
-	/** Visit a single instruction. */
-	private boolean visitInstruction(Instruction i) {
-		short opcode = i.getOpcode();
-
-		return ((InstructionConstants.INSTRUCTIONS[opcode] != null) &&
-				!(i instanceof ConstantPushInstruction) &&
-				!(i instanceof ReturnInstruction));
-	}
-
-	/** Local variable use. */
-	@Override
-	public void visitLocalVariableInstruction(LocalVariableInstruction i) {
-		if(i.getOpcode() != Constants.IINC) {
-			cv.registerCoupling(i.getType(cp));
-		}
-	}
-
-	/** Array use. */
-	@Override
-	public void visitArrayInstruction(ArrayInstruction i) {
-		cv.registerCoupling(i.getType(cp));
-	}
-
-	/** Field access. */
-	@Override
-	public void visitFieldInstruction(FieldInstruction i) {
-		cv.registerFieldAccess(i.getClassName(cp), i.getFieldName(cp));
-		cv.registerCoupling(i.getFieldType(cp));
-	}
-
-	/** Method invocation. */
-	@Override
-	public void visitInvokeInstruction(InvokeInstruction i) {
-		Type[] argTypes   = i.getArgumentTypes(cp);
-		for (Type argType : argTypes) {
-			cv.registerCoupling(argType);
-		}
-		cv.registerCoupling(i.getReturnType(cp));
-		String classname=i.getClassName(cp);
-		try {
-			JavaClass superclass=cv.getJavaClass().getSuperClass();
-			//		System.out.println(superclass.getClassName());
-			if (!superclass.getClassName().equals("java.lang.Object")&&!superclass.isInterface()) {
-				for (org.apache.bcel.classfile.Method supermethod : superclass.getMethods()) {
-					if (supermethod.getName().equals(i.getMethodName(cp))) {
-						if (supermethod.getName().equals("<init>")) {
-							;
-						} else {
-							if(supermethod.getName().equals(i.getMethodName(cp))){
-								ArrayList<Type> supermethodParams= new ArrayList<Type>();
-								ArrayList<Type> methodParams= new ArrayList<Type>();
-								for (Type type : supermethod.getArgumentTypes()) {
-									//								System.out.println(type.toString());
-									supermethodParams.add(type);
-								}
-								for (Type type:i.getArgumentTypes(cp)) {
-									methodParams.add(type);
-								}
-								if(supermethodParams.equals(methodParams)){
-									classname=superclass.getClassName();
-								}
-							}
-						}
-					}
-				}
-			}
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		//	System.out.println(i.getMethodName(cp)+":"+ mg.getName()+":"+i.getClassName(cp));
-		//	System.out.println(i.getClassName(cp));
-		/* Measuring decision: measure overloaded methods separately */
-		cv.registerMethodInvocation(i.getClassName(cp), i.getMethodName(cp), argTypes);
-		cv.registerMethodInvocation(classname, mg.getName(),i.getMethodName(cp),argTypes);
-	}
-
-	/** Visit an instanceof instruction. */
-	@Override
-	public void visitINSTANCEOF(INSTANCEOF i) {
-		cv.registerCoupling(i.getType(cp));
-	}
-
-	/** Visit checklast instruction. */
-	@Override
-	public void visitCHECKCAST(CHECKCAST i) {
-		cv.registerCoupling(i.getType(cp));
-	}
-
-	/** Visit return instruction. */
-	@Override
-	public void visitReturnInstruction(ReturnInstruction i) {
-		cv.registerCoupling(i.getType(cp));
-	}
-
-	/** Visit the method's exception handlers. */
-	private void updateExceptionHandlers() {
-		CodeExceptionGen[] handlers = mg.getExceptionHandlers();
-
-		/* Measuring decision: couple exceptions */
-		for (CodeExceptionGen handler : handlers) {
-			Type t = handler.getCatchType();
-			if (t != null) {
-				cv.registerCoupling(t);
-			}
-		}
-=======
     /** Method generation template. */
     private MethodGen mg;
     /* The class's constant pool. */
@@ -268,8 +126,8 @@ class MethodVisitor extends EmptyVisitor {
 						;
 					} else {
 						if(supermethod.getName().equals(i.getMethodName(cp))){
-							ArrayList<Type> supermethodParams= new ArrayList<>();
-							ArrayList<Type> methodParams= new ArrayList<>();
+							ArrayList<Type> supermethodParams= new ArrayList<Type>();
+							ArrayList<Type> methodParams= new ArrayList<Type>();
 							for (Type type : supermethod.getArgumentTypes()) {
 //								System.out.println(type.toString());
 								supermethodParams.add(type);
@@ -323,6 +181,6 @@ class MethodVisitor extends EmptyVisitor {
 	    Type t = handlers[i].getCatchType();
 	    if (t != null)
 		cv.registerCoupling(t);
->>>>>>> 9d0428b2ab9af0ba654bb43637d5434cce5985f3
 	}
+    }
 }
