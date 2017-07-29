@@ -5,19 +5,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.apache.tools.ant.DirectoryScanner;
-import org.junit.experimental.theories.Theories;
-import org.junit.rules.Timeout;
 
 import com.fengdai.qa.link.tree;
 import com.fengdai.qa.link.treeNode;
 
-import ch.qos.logback.classic.Logger;
-import gr.spinellis.ckjm.ClassVisitor;
 import gr.spinellis.ckjm.MetricsFilter;
 import gr.spinellis.ckjm.PrintPlainResults;
 
@@ -26,14 +23,14 @@ import gr.spinellis.ckjm.PrintPlainResults;
 public class parseSrcUtil {
 
 	final static LogUtil logger=new LogUtil(parseSrcUtil.class);
-	
+
 	public static String[] scanClasses(String classesDir){
 		String classDir = classesDir;
 		File file= new File(classDir);
-		
+
 		DirectoryScanner scanner = new DirectoryScanner();
 		String[] includes = {"**//*.class"};
-//		String[] includes = {"**//*.jar"};
+		//		String[] includes = {"**//*.jar"};
 		scanner.setIncludes(includes);
 		scanner.setBasedir(file);
 		scanner.setCaseSensitive(true);
@@ -49,12 +46,15 @@ public class parseSrcUtil {
 				logger.logInfo(file.getPath()+file.separatorChar+filesTemp[ioe]);
 			}
 		}
-		return (String[])files.toArray(new String[files.size()]);
-		
+		return files.toArray(new String[files.size()]);
+
 	}
-	
+
 	public static void parseMetriscs(String classesDir,HashSet<String> varchange){
 		String outFile="output/a.txt";
+		StringBuffer resultToFile= new StringBuffer();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		resultToFile.append(df.format(new Date())+"/n");
 		File out= new File(outFile);
 		ArrayList<tree<String>> result = new ArrayList<>();
 		try {
@@ -62,7 +62,7 @@ public class parseSrcUtil {
 			PrintPlainResults var7 = new PrintPlainResults(new PrintStream(var6));
 			result = new  LinkToTreeUtil().createTree(MetricsFilter.runMetrics(scanClasses(classesDir), var7));
 			var6.close();
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -71,12 +71,12 @@ public class parseSrcUtil {
 
 
 		HashSet<String> changerange=new HashSet<String>();
-//		String linktemp=ReadFromFile.readFileByLines("output/调用关系.txt");
-//		result = new  LinkToTreeUtil().createTree(linktemp);
+		//		String linktemp=ReadFromFile.readFileByLines("output/调用关系.txt");
+		//		result = new  LinkToTreeUtil().createTree(linktemp);
 
 		System.out.println("修改的类的方法"+varchange);
-		for(Iterator<tree<String>> it = result.iterator(); it.hasNext();){
-			tree<String> temp= it.next();
+		resultToFile.append("修改的类的方法"+varchange+"/n");
+		for (tree<String> temp : result) {
 			for(String varunit:varchange){
 				treeNode<String> node = temp.search(temp.root, varunit);
 				if(!(node == null)){
@@ -85,14 +85,17 @@ public class parseSrcUtil {
 			}
 		}
 		System.out.println("此处修改影响范围");
+		resultToFile.append("此处修改影响范围/n");
 		for(String temp:changerange){
 			System.out.println(temp);
+			resultToFile.append(temp+"/n");
 		}
+		WriteToFile.appendFile(resultToFile.toString(),"output/影响范围.txt");
 	}
-	
+
 	public static HashSet<String> calcEnv(HashSet<String> changerange,ArrayList<tree<String>> result){
 		boolean Implflag=false;//是否还有实现类
-		
+
 		for(String var:changerange){
 			if(var.contains("Impl")){
 				Implflag=true;
@@ -105,17 +108,16 @@ public class parseSrcUtil {
 			HashSet<String> toAdd= new HashSet<>();
 			for(String var:changerange){
 				if(var.contains("Impl")){
-//					changerange.remove(var);
+					//					changerange.remove(var);
 					toRemove.add(var);
 					String varImplToApi=var.replace(".service.impl.", ".service.").replace("Impl", "");
 					toAdd.add(varImplToApi);
-//					System.out.println(varImplToApi);
-					for(Iterator<tree<String>> it = result.iterator(); it.hasNext();){
-						tree<String> temp= it.next();
-							treeNode<String> node = temp.search(temp.root, varImplToApi);
-							if(!(node == null)){
-//								changerange.add(temp.root.t.toString());
-								toAdd.add(temp.root.t.toString());
+					//					System.out.println(varImplToApi);
+					for (tree<String> temp : result) {
+						treeNode<String> node = temp.search(temp.root, varImplToApi);
+						if(!(node == null)){
+							//								changerange.add(temp.root.t.toString());
+							toAdd.add(temp.root.t.toString());
 						}
 					}
 				}
@@ -127,10 +129,10 @@ public class parseSrcUtil {
 			return changerange;
 		}
 	}
-	
+
 	public static HashSet<String> calcEnvToClass(HashSet<String> changerange,ArrayList<tree<String>> result){
 		boolean Implflag=false;//是否还有实现类
-		
+
 		for(String var:changerange){
 			if(var.contains("Impl")){
 				Implflag=true;
@@ -143,16 +145,15 @@ public class parseSrcUtil {
 			HashSet<String> toAdd= new HashSet<>();
 			for(String var:changerange){
 				if(var.contains("Impl")){
-//					changerange.remove(var);
+					//					changerange.remove(var);
 					toRemove.add(var);
 					String varImplToApi=var.replace(".service.impl.", ".service.").replace("Impl", "");
 					toAdd.add(varImplToApi);
-//					System.out.println(varImplToApi);
-					for(Iterator<tree<String>> it = result.iterator(); it.hasNext();){
-						tree<String> temp= it.next();
+					//					System.out.println(varImplToApi);
+					for (tree<String> temp : result) {
 						treeNode<String> node = temp.search(temp.root, varImplToApi);
 						if(!(node == null)){
-//								changerange.add(temp.root.t.toString());
+							//								changerange.add(temp.root.t.toString());
 							toAdd.add(temp.root.t.toString());
 						}
 					}
@@ -167,17 +168,19 @@ public class parseSrcUtil {
 	}
 
 	public static void main(String[] args) {
+		String filedir="D:\\jenkins\\workspace\\fengdai";
 		// TODO Auto-generated method stub
-//		parseMetriscs("F:/github/接口测试Demo/apptest/target");
-//		parseMetriscs("F:/开发源码/core-base/target");
-//		parseMetriscs("F:/开发源码/core-base/target/classes");
-		
+		//		parseMetriscs("F:/github/接口测试Demo/apptest/target");
+		//		parseMetriscs("F:/开发源码/core-base/target");
+		//		parseMetriscs("F:/开发源码/core-base/target/classes");
+
 		HashSet<String> varchange=new HashSet();
-		varchange.add("com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法delete");
-//		parseMetriscs("E:/开发源码class/dubbo-riskcontrol-0.0.1.M1-SNAPSHOT-distribution/dubbo-riskcontrol-0.0.1.M1-SNAPSHOT/lib",varchange);
-		parseMetriscs("F:/开发源码",varchange);
-//		parseMetriscs("F:/开发源码/fengdai-core-channel-test/workspace/core-channel/target/classes/com/fengdai/channel/service/impl/temp",varchange);
-//		parseMetriscs("F:/test/testbcel/target/classes/org/wsc/testbcel/testbcel/test",varchange);
+		varchange.add("com.fengdai.authority.service.impl的方法findApisFromMenu");
+		//		varchange.add("com.wsc.testbcel.testbcel.Programmer");
+		//		parseMetriscs("E:/开发源码class/dubbo-riskcontrol-0.0.1.M1-SNAPSHOT-distribution/dubbo-riskcontrol-0.0.1.M1-SNAPSHOT/lib",varchange);
+		parseMetriscs(filedir,varchange);
+		//		parseMetriscs("F:/开发源码/fengdai-core-channel-test/workspace/core-channel/target/classes/com/fengdai/channel/service/impl/temp",varchange);
+		//		parseMetriscs("F:/test/testbcel/target/classes/org/wsc/testbcel/testbcel/test",varchange);
 	}
 
 }

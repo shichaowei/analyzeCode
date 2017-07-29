@@ -25,9 +25,9 @@
 
     
     <!--other logger -->
-    <logger name="logback"  additivity="false"/>
     <logger name="com.fengdai.qa" level="INFO" additivity="false">
     	<appender-ref ref="FILE"/>
+    	<appender-ref ref="STDOUT"/>
     </logger>
     
     

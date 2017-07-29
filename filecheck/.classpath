@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src/main/resource"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-activiti"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-authority"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-authority-api"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-base"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-operation"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-operation-api"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-thirdparty"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-thirdparty-api"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-user"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core-user-api"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-account"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-account-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-activity"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-activity-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-authority"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-authority-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-channel"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-channel-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-electricseal"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-electricseal-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-fdactiviti"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-fdactiviti-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-finance"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-finance-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-mqnotify"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-mqnotify-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-mqserver"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-mqserver-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-operation"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-operation-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-product"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-product-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-quartz"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-quartz-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-report"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-report-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-riskcontrol"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-riskcontrol-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-shop"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-shop-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-system"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-system-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-thirdparty"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-thirdparty-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-transaction"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-transaction-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-transaction-distributed"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-user"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/dubbo-user-client"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/md-account"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/md-account-api"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

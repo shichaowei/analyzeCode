@@ -1,0 +1,76 @@
+2017-07-21 14:31:56
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+2017-07-21 14:47:25
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+com.wsc.testbcel.testbcel.Programmer的方法<init>
+2017-07-21 15:49:27
+修改的类的方法[com.wsc.testbcel.testbcel.ProgrammerTest]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法docoding
+2017-07-21 15:54:33
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+2017-07-21 15:59:33
+修改的类的方法[com.wsc.testbcel.testbcel.ProgrammerTest, com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.ProgrammerTest的方法docoding1
+2017-07-21 16:00:33
+修改的类的方法[com.wsc.testbcel.testbcel.ProgrammerTest, com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+com.wsc.testbcel.testbcel.ProgrammerTest的方法docoding1
+2017-07-21 16:01:33
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+2017-07-21 16:03:33
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+2017-07-21 16:10:59
+修改的类的方法[com.wsc.testbcel.testbcel.ProgrammerTest]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.ProgrammerTest的方法docoding1
+2017-07-21 16:11:59
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+2017-07-21 16:17:40
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+2017-07-21 16:48:09
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+2017-07-21 16:48:49
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+2017-07-21 16:57:23
+修改的类的方法[com.wsc.testbcel.testbcel.Programmer]
+此处修改影响范围
+com.wsc.testbcel.testbcel.ProgrammerTest的方法<init>
+com.wsc.testbcel.testbcel.Programmer的方法docoding
+com.wsc.testbcel.testbcel.ProgrammerTest的方法diaoyongmethodname
+2017-07-21 17:36:21
+修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]
+此处修改影响范围
+com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法delete
+com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu
+com.fengdai.authority.service.impl.AuthorityServiceImpl的方法setApiResourceDao
+com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法getList
+com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByAssociateRole
+2017-07-21 17:53:22/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/n2017-07-21 17:54:28/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/n2017-07-21 17:55:00/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/n2017-07-21 17:55:42/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/n2017-07-21 17:58:27/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/n2017-07-21 18:17:27/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/n2017-07-21 18:19:21/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/n2017-07-21 18:19:29/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator]/n此处修改影响范围/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法delete/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu/ncom.fengdai.authority.service.impl.AuthorityServiceImpl的方法setApiResourceDao/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法fuction/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法getList/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator$2的方法fuction/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator$1的方法fuction/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByAssociateRole/n2017-07-21 18:29:48/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu/n2017-07-29 15:53:23/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 15:53:48/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 16:41:35/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 16:42:13/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 16:42:41/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 16:44:59/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 16:46:45/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 16:49:43/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 16:50:25/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 17:01:57/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 17:02:12/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/n2017-07-29 17:04:57/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu/n2017-07-29 18:27:09/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu/n2017-07-29 18:34:19/n修改的类的方法[com.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu]/n此处修改影响范围/ncom.fengdai.authority.dao.redis.ApiResourceDaoDecorator的方法findApiResourceByMenu/n2017-07-29 18:57:59/n修改的类的方法[com.fengdai.authority.service.impl的方法findApisFromMenu]/n此处修改影响范围/n2017-07-29 18:59:10/n修改的类的方法[com.fengdai.authority.service.impl的方法findApisFromMenu]/n此处修改影响范围/n

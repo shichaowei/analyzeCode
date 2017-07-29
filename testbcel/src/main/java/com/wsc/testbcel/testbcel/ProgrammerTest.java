@@ -1,17 +1,19 @@
 package com.wsc.testbcel.testbcel;
 
-public class ProgrammerTest {
-	
+public class ProgrammerTest extends BaseProgrammer{
+
+
 	public void docoding() {
-        
-        doBcelPlan();
-        System.out.println("do coding..sfdfd.");
-    }
-    
-    private void doBcelPlan() {
-        System.out.println("doBcelPlan...");
-    }
-    
-    
+
+		doBcelPlan();
+		System.out.println("do coding..sfdfd.");
+	}
+
+	private void doBcelPlan() {
+		docoding1();
+		System.out.println("doBcelPlan...");
+	}
+
+
 
 }
