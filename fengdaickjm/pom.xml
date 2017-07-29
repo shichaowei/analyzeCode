@@ -44,6 +44,8 @@
 			<artifactId>commons-math3</artifactId>
 			<version>3.3</version>
 		</dependency>
+
+		
 	</dependencies>
 
 </project>
