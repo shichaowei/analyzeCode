@@ -25,18 +25,18 @@ public class parseSrcUtil {
 	final static LogUtil logger=new LogUtil(parseSrcUtil.class);
 
 	public static String[] scanClasses(String classesDir){
-		String classDir = classesDir;
-		File file= new File(classDir);
+		final String classDir = classesDir;
+		final File file= new File(classDir);
 
-		DirectoryScanner scanner = new DirectoryScanner();
-		String[] includes = {"**//*.class"};
+		final DirectoryScanner scanner = new DirectoryScanner();
+		final String[] includes = {"**//*.class"};
 		//		String[] includes = {"**//*.jar"};
 		scanner.setIncludes(includes);
 		scanner.setBasedir(file);
 		scanner.setCaseSensitive(true);
 		scanner.scan();
-		String[] filesTemp = scanner.getIncludedFiles();
-		ArrayList<String> files =new ArrayList<>();
+		final String[] filesTemp = scanner.getIncludedFiles();
+		final ArrayList<String> files =new ArrayList<>();
 
 		logger.logInfo("要测试的类路径为：");
 		for(int ioe=0;ioe<filesTemp.length;ioe++){
@@ -51,34 +51,34 @@ public class parseSrcUtil {
 	}
 
 	public static void parseMetriscs(String classesDir,HashSet<String> varchange){
-		String outFile="output/a.txt";
-		StringBuffer resultToFile= new StringBuffer();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		final String outFile="output/a.txt";
+		final StringBuffer resultToFile= new StringBuffer();
+		final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		resultToFile.append(df.format(new Date())+"/n");
-		File out= new File(outFile);
+		final File out= new File(outFile);
 		ArrayList<tree<String>> result = new ArrayList<>();
 		try {
-			FileOutputStream var6 = new FileOutputStream(out);
-			PrintPlainResults var7 = new PrintPlainResults(new PrintStream(var6));
+			final FileOutputStream var6 = new FileOutputStream(out);
+			final PrintPlainResults var7 = new PrintPlainResults(new PrintStream(var6));
 			result = new  LinkToTreeUtil().createTree(MetricsFilter.runMetrics(scanClasses(classesDir), var7));
 			var6.close();
 
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
 
-		HashSet<String> changerange=new HashSet<String>();
+		final HashSet<String> changerange=new HashSet<String>();
 		//		String linktemp=ReadFromFile.readFileByLines("output/调用关系.txt");
 		//		result = new  LinkToTreeUtil().createTree(linktemp);
 
 		System.out.println("修改的类的方法"+varchange);
 		resultToFile.append("修改的类的方法"+varchange+"/n");
-		for (tree<String> temp : result) {
-			for(String varunit:varchange){
-				treeNode<String> node = temp.search(temp.root, varunit);
+		for (final tree<String> temp : result) {
+			for(final String varunit:varchange){
+				final treeNode<String> node = temp.search(temp.root, varunit);
 				if(!(node == null)){
 					changerange.add(temp.root.t.toString());
 				}
@@ -86,7 +86,7 @@ public class parseSrcUtil {
 		}
 		System.out.println("此处修改影响范围");
 		resultToFile.append("此处修改影响范围/n");
-		for(String temp:changerange){
+		for(final String temp:changerange){
 			System.out.println(temp);
 			resultToFile.append(temp+"/n");
 		}
@@ -96,7 +96,7 @@ public class parseSrcUtil {
 	public static HashSet<String> calcEnv(HashSet<String> changerange,ArrayList<tree<String>> result){
 		boolean Implflag=false;//是否还有实现类
 
-		for(String var:changerange){
+		for(final String var:changerange){
 			if(var.contains("Impl")){
 				Implflag=true;
 			}else{
@@ -104,17 +104,17 @@ public class parseSrcUtil {
 			}
 		}
 		if(Implflag){
-			HashSet<String> toRemove= new HashSet<>();
-			HashSet<String> toAdd= new HashSet<>();
-			for(String var:changerange){
+			final HashSet<String> toRemove= new HashSet<>();
+			final HashSet<String> toAdd= new HashSet<>();
+			for(final String var:changerange){
 				if(var.contains("Impl")){
 					//					changerange.remove(var);
 					toRemove.add(var);
-					String varImplToApi=var.replace(".service.impl.", ".service.").replace("Impl", "");
+					final String varImplToApi=var.replace(".service.impl.", ".service.").replace("Impl", "");
 					toAdd.add(varImplToApi);
 					//					System.out.println(varImplToApi);
-					for (tree<String> temp : result) {
-						treeNode<String> node = temp.search(temp.root, varImplToApi);
+					for (final tree<String> temp : result) {
+						final treeNode<String> node = temp.search(temp.root, varImplToApi);
 						if(!(node == null)){
 							//								changerange.add(temp.root.t.toString());
 							toAdd.add(temp.root.t.toString());
@@ -133,7 +133,7 @@ public class parseSrcUtil {
 	public static HashSet<String> calcEnvToClass(HashSet<String> changerange,ArrayList<tree<String>> result){
 		boolean Implflag=false;//是否还有实现类
 
-		for(String var:changerange){
+		for(final String var:changerange){
 			if(var.contains("Impl")){
 				Implflag=true;
 			}else{
@@ -141,17 +141,17 @@ public class parseSrcUtil {
 			}
 		}
 		if(Implflag){
-			HashSet<String> toRemove= new HashSet<>();
-			HashSet<String> toAdd= new HashSet<>();
-			for(String var:changerange){
+			final HashSet<String> toRemove= new HashSet<>();
+			final HashSet<String> toAdd= new HashSet<>();
+			for(final String var:changerange){
 				if(var.contains("Impl")){
 					//					changerange.remove(var);
 					toRemove.add(var);
-					String varImplToApi=var.replace(".service.impl.", ".service.").replace("Impl", "");
+					final String varImplToApi=var.replace(".service.impl.", ".service.").replace("Impl", "");
 					toAdd.add(varImplToApi);
 					//					System.out.println(varImplToApi);
-					for (tree<String> temp : result) {
-						treeNode<String> node = temp.search(temp.root, varImplToApi);
+					for (final tree<String> temp : result) {
+						final treeNode<String> node = temp.search(temp.root, varImplToApi);
 						if(!(node == null)){
 							//								changerange.add(temp.root.t.toString());
 							toAdd.add(temp.root.t.toString());
@@ -168,14 +168,14 @@ public class parseSrcUtil {
 	}
 
 	public static void main(String[] args) {
-		String filedir="D:\\jenkins\\workspace\\fengdai";
+		final String filedir="E:\\测试代码\\analyzeCode\\testbcel\\target";
 		// TODO Auto-generated method stub
 		//		parseMetriscs("F:/github/接口测试Demo/apptest/target");
 		//		parseMetriscs("F:/开发源码/core-base/target");
 		//		parseMetriscs("F:/开发源码/core-base/target/classes");
 
-		HashSet<String> varchange=new HashSet();
-		varchange.add("com.fengdai.authority.service.impl的方法findApisFromMenu");
+		final HashSet<String> varchange=new HashSet();
+		varchange.add("com.wsc.testbcel.testbcel.BaseProgrammer的方法docoding");
 		//		varchange.add("com.wsc.testbcel.testbcel.Programmer");
 		//		parseMetriscs("E:/开发源码class/dubbo-riskcontrol-0.0.1.M1-SNAPSHOT-distribution/dubbo-riskcontrol-0.0.1.M1-SNAPSHOT/lib",varchange);
 		parseMetriscs(filedir,varchange);
