@@ -5,6 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +56,7 @@ public class parseSrcUtil {
 	}
 
 	public static void parseMetriscs(String classesDir,HashSet<String> varchange){
+		addClasspaths(classesDir);
 		final String outFile="output/a.txt";
 		final StringBuffer resultToFile= new StringBuffer();
 		final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -92,6 +98,38 @@ public class parseSrcUtil {
 		}
 		WriteToFile.appendFile(resultToFile.toString(),"output/影响范围.txt");
 	}
+	
+	
+	public static void addClasspaths(String classRootDir) {
+		try {
+			final File[] files = new File(classRootDir).listFiles();
+//			final File programRootDir = new File("./");
+			final URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			final Method add = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+			add.setAccessible(true);
+			for(final File temp : files)
+				add.invoke(classLoader, temp.toURI().toURL());
+		} catch (final NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+	
 
 	public static HashSet<String> calcEnv(HashSet<String> changerange,ArrayList<tree<String>> result){
 		boolean Implflag=false;//是否还有实现类
