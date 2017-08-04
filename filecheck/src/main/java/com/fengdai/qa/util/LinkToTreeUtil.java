@@ -34,15 +34,16 @@ public class LinkToTreeUtil {
 			//内部类  com.fengdai.activity.constant.ActivityBizConstant$DicKey
 			//内部对象 com.fengdai.activity.service.impl.CouponsDistributeServiceImpl$1
 			//内部类访问外部使用access$iii(Outer) com.fengdai.activity.service.impl.CouponsDistributeServiceImpl的方法access$0
+			//类的初始化方法<clinit> 静态变量初始化语句和静态块的执行 com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl的方法<clinit>: 不进入调用链
 			
 			String[] var2 = var1.split("被调用于");
-			//处理lambda函数,不包括内部对象有lambda函数的
+			//处理lambda函数(不包括直接lambda$0，只处理lambda$test$236)
 			//处理com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83----com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法mergeBills
 			if(var2[0].contains("lambda")){
 				throw new RuntimeException("被调用方有lambda，代码还没有做处理");
 			}
-			String pattern = ".*lambda\\$[0-9]+.*";
-			if(var2[1].contains("lambda")&& !Pattern.matches(pattern, var2[1])){
+			String pattern = ".*的方法lambda\\$[a-zA-Z]+.*";
+			if(var2[1].contains("lambda")&& Pattern.matches(pattern, var2[1])){
 				var2[1]=var2[1].replace("lambda", "").replace("$", "!!").replaceAll("!![0-9]*", "");
 			}
 			
@@ -59,10 +60,22 @@ public class LinkToTreeUtil {
 			
 			
 			//处理内部对象
-			//默认发现process对应的是init process都没有参数 init参数有 我们做去参处理
+			//默认发现process/run对应的是init process(LogPrepare)/run(new Runnable(){})都没有参数 init参数有 我们做去参处理
+//			for(int i=0;i<2;i++){
+//				if (var2[i].contains("$") && var2[i].contains("<init>")) {
+//					var2[i]=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>", "process")+":";
+//				}
+//			}
+			pattern = ".*\\$[0-9]+的方法<init>.*[^lambda].*";
 			for(int i=0;i<2;i++){
-				if (var2[i].contains("$") && var2[i].contains("<init>")) {
-					var2[i]=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>", "process")+":";
+				if (Pattern.matches(pattern, var2[i])) {
+					String processTemp=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>","process")+":";
+					String runTemp=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>","run")+":";
+					if(lefteles.contains(processTemp)||righteles.contains(processTemp))
+						var2[i]=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>","process")+":";
+					else if (lefteles.contains(runTemp)||righteles.contains(runTemp)) {
+						var2[i]=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>","run")+":";
+					}
 				}
 			}
 			//处理映射关系

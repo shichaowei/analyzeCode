@@ -129,13 +129,13 @@ class MethodVisitor extends EmptyVisitor {
 		cv.registerCoupling(i.getReturnType(cp));
 		String classname = i.getClassName(cp);
 		
-//		System.out.println("调用的方法所在的类（子类）" + classname + "方法" + i.getMethodName(cp));
-//		System.out.println("调用方class名称" + cv.getJavaClass().getClassName());
-//		System.out.println("调用方父class名称" + cv.getJavaClass().getSuperclassName());
-//		if (classname.contains("com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl")
-//				&& i.getMethodName(cp).contains("handleReturn")) {
-//			System.out.println("com.fengdai.activity.form.DitchForm");
-//		}
+		System.out.println("调用的方法所在的类（子类）" + classname + "方法" + i.getMethodName(cp));
+		System.out.println("调用方class名称" + cv.getJavaClass().getClassName());
+		System.out.println("调用方父class名称" + cv.getJavaClass().getSuperclassName());
+		if (classname.contains("com.fengdai.finance.model.ChannelSettlement")
+				&& i.getMethodName(cp).contains("getSettlementType")&&mg.getName().contains("lambda$0")) {
+			System.out.println("com.fengdai.activity.form.DitchForm");
+		}
 		StringBuffer realBeiDiaoMethodParamsStr = new StringBuffer();
 		try {
 			JavaClass superclass = cv.getJavaClass().getSuperClass();
@@ -265,6 +265,13 @@ class MethodVisitor extends EmptyVisitor {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		//处理内部类访问外部files或者method
+		if(i.getMethodName(cp).contains("access$") && realBeiDiaoMethodParamsStr.toString().isEmpty()) {
+			for (Type type : i.getArgumentTypes(cp)) {
+				realBeiDiaoMethodParamsStr.append(type.toString() + "-");
+			}
+		}
+		
 		// System.out.println(i.getMethodName(cp)+":"+
 		// mg.getName()+":"+i.getClassName(cp));
 		// System.out.println(i.getClassName(cp));

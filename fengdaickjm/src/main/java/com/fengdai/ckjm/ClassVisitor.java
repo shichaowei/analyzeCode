@@ -185,8 +185,8 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 		//&& ClassMetrics.isfengdaiclass(className)||ClassMetrics.isfundsclass(className)
 		if ((MetricsFilter.isJdkIncluded() || !ClassMetrics.isJdkClass(className)) ) {
 //			System.out.println(String.format("%s的方法%s被调用于%s的方法%s",className,beidiaoyongmethodName,myClassName,diaoyongmethodname));
-			if(!(className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname)))
-				result.add(String.format("%s的方法%s被调用于%s的方法%s",className,beidiaoyongmethodName,myClassName,diaoyongmethodname));
+			if(!(className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname)) && !diaoyongmethodname.contains("clinit"))
+					result.add(String.format("%s的方法%s被调用于%s的方法%s",className,beidiaoyongmethodName,myClassName,diaoyongmethodname));
 		}
 	}
 

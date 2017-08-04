@@ -8,13 +8,13 @@ public class TestString {
 	public static void test(String var1) {
 		
 		String[] var2 = var1.split("被调用于");
-		//处理lambda函数,不包括内部对象有lambda函数的
+		//处理lambda函数(不包括直接lambda$0，只处理lambda$test$236),不包括内部对象有lambda函数的
 		//处理com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83----com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法mergeBills
 		if(var2[0].contains("lambda")){
 			throw new RuntimeException("被调用方有lambda，代码还没有做处理");
 		}
-		String pattern = ".*lambda\\$[0-9]+.*";
-		if(var2[1].contains("lambda")&& !Pattern.matches(pattern, var2[1])){
+		String pattern = ".*的方法lambda\\$[a-zA-Z]+.*";
+		if(var2[1].contains("lambda")&& Pattern.matches(pattern, var2[1])){
 			var2[1]=var2[1].replace("lambda", "").replace("$", "!!").replaceAll("!![0-9]*", "");
 		}
 		
@@ -29,11 +29,13 @@ public class TestString {
 			var2[1]=var2[1].split("的方法")[0]+"的方法process:";
 		}
 		
+		
 		//处理内部对象
 		//默认发现process对应的是init process都没有参数 init参数有 我们做去参处理
+		pattern = ".*\\$[0-9]+的方法<init>.*[^lambda].*";
 		for(int i=0;i<2;i++){
-			if (var2[i].contains("$") && var2[i].contains("<init>")) {
-				var2[i]=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>", "process")+":";
+			if (Pattern.matches(pattern, var2[i])) {
+				var2[i]=var2[i].substring(0, var2[i].indexOf(":")).replace("<init>","process")+":";
 			}
 		}
 		//处理映射关系
@@ -69,8 +71,10 @@ public class TestString {
 		// System.out.println(("com"+var[var.length-1]).replace("\\",
 		// ".").replace(".class", "").split("\\$")[0]);
 		// System.out.println("com.wsc.testbcel.testbcel.Programmer".split("的方法").length);
-		String content = "com.fengdai.base.service.impl.mq.LogPrepare的方法<init>:被调用于com.fengdai.activity.service.impl.CouponsDistributeServiceImpl$1的方法<init>:com.fengdai.activity.service.impl.CouponsDistributeServiceImpljava.lang.Object[]com.fengdai.activity.form.CardCouponsUserForm\r\n" + 
-				"";
+//		String content = "com.fengdai.mqserver.api.MqserverApiProvider的方法getMessageCallbanckService:被调用于com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl$2的方法run:";
+//		String content = "com.fengdai.mqserver.api.MqserverApiProvider的方法getMessageCallbanckService:被调用于com.fengdai.shop.service.impl.ShopOrderInfoServiceImpl$1的方法process:";
+//		String content = "com.fengdai.finance.enums.SettlementType的方法name:被调用于com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl的方法lambda$0:com.fengdai.finance.model.ChannelSettlement-";
+		String content = "com.fengdai.finance.enums.SettlementType的方法name:被调用于com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83";
 //		String content = "com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83";
 		test(content);
 //		String pattern = ".*\\$[0-9]+的方法lambda\\$[0-9]+.*";
