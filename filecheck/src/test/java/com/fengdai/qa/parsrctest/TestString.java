@@ -76,8 +76,14 @@ public class TestString {
 //		String content = "com.fengdai.finance.enums.SettlementType的方法name:被调用于com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl的方法lambda$0:com.fengdai.finance.model.ChannelSettlement-";
 		String content = "com.fengdai.finance.enums.SettlementType的方法name:被调用于com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83";
 //		String content = "com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83";
-		test(content);
-//		String pattern = ".*\\$[0-9]+的方法lambda\\$[0-9]+.*";
+//		test(content);
+		System.out.println("com/fengdai/shop/service/impl/ShopOrderHandleServiceImpl.lambda$0:(Lcom/fengdai/finance/model/ChannelSettlement;)Z".replace("(", "").replaceAll("\\).*", "").replace("Lcom/", "com/").replace("/", "."));
+		String className="org.slf4j.LoggerFactory";
+		String beidiaoyongmethodName="getLogger:java.lang.Class-";
+		String diaoyongmethodname="<clinit>:";
+		String myClassName="com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl";
+		System.out.println(!(className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname)) && !diaoyongmethodname.contains("clinit"));
+		//		String pattern = ".*\\$[0-9]+的方法lambda\\$[0-9]+.*";
 //		boolean isMatch = Pattern.matches(pattern, content);
 //		System.out.println("字符串中是否包含了 'runoob' 子字符串? " + isMatch);
 //		if(isMatch) {

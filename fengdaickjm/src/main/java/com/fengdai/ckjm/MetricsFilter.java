@@ -18,6 +18,7 @@ package com.fengdai.ckjm;
 
 import org.apache.bcel.classfile.*;
 import java.io.*;
+import java.util.HashMap;
 
 /**
  * Convert a list of classes into their metrics.
@@ -49,43 +50,47 @@ public class MetricsFilter {
      * The class specification can be either a class file name, or
      * a jarfile, followed by space, followed by a class file name.
      * @param files 所有的class文件路径
+     * @param map<调用链：链式内容；方法与注解：链式内容>
      * @return 
      */
-    static String processClass(ClassMetricsContainer cm, String clspec, String[] files) {
-	int spc;
-	JavaClass jc = null;
-//	System.out.println(clspec.indexOf(' '));
-	if ((spc = clspec.indexOf(' ')) != -1) {
-	    String jar = clspec.substring(0, spc);
-	    clspec = clspec.substring(spc + 1);
-	    try {
-		jc = new ClassParser(jar, clspec).parse();
-
-	    } catch (IOException e) {
-		System.err.println("Error loading " + clspec + " from " + jar + ": " + e);
-	    }
-	} else {
-	    try {
-		jc = new ClassParser(clspec).parse();
-//		System.out.println(jc.toString());
-//		if(jc.toString().contains("com.fengdai.base.form.AbstractPageForm")) {
-//			System.out.println("com.fengdai.base.form.AbstractPageForm");
+    static HashMap<String, String> processClass(ClassMetricsContainer cm, String clspec, String[] files) {
+    	HashMap<String, String> result = new HashMap<String, String>();
+		int spc;
+		JavaClass jc = null;
+	//	System.out.println(clspec.indexOf(' '));
+//		if ((spc = clspec.indexOf(' ')) != -1) {
+//		    String jar = clspec.substring(0, spc);
+//		    clspec = clspec.substring(spc + 1);
+//		    try {
+//			jc = new ClassParser(jar, clspec).parse();
+//	
+//		    } catch (IOException e) {
+//			System.err.println("Error loading " + clspec + " from " + jar + ": " + e);
+//		    }
+//		} else {
+		    try {
+			jc = new ClassParser(clspec).parse();
+	//		System.out.println(jc.toString());
+	//		if(jc.toString().contains("com.fengdai.base.form.AbstractPageForm")) {
+	//			System.out.println("com.fengdai.base.form.AbstractPageForm");
+	//		}
+		    } catch (IOException e) {
+			System.err.println("Error loading " + clspec + ": " + e);
+		    } catch (ClassFormatException e) {
+		    	System.err.println("Error loading " + clspec + ": " + e);
+			}
 //		}
-	    } catch (IOException e) {
-		System.err.println("Error loading " + clspec + ": " + e);
-	    } catch (ClassFormatException e) {
-	    	System.err.println("Error loading " + clspec + ": " + e);
+		if (jc != null) {
+		    ClassVisitor visitor = new ClassVisitor(jc, cm,files);
+		    visitor.start();
+		    visitor.end();
+		    //打印调用关系
+	//	    System.out.println(visitor.getresult());
+		    result.put("callParis",visitor.getresult());
+		    result.put("annotParis",visitor.getAnnoParisresult());
 		}
-	}
-	if (jc != null) {
-	    ClassVisitor visitor = new ClassVisitor(jc, cm,files);
-	    visitor.start();
-	    visitor.end();
-	    //打印调用关系
-//	    System.out.println(visitor.getresult());
-	    return visitor.getresult();
-	}
-	return clspec;
+		return result;
+//		return clspec;
     }
 
     /**
@@ -95,18 +100,27 @@ public class MetricsFilter {
      * @param files Class files to be analyzed
      * @param outputHandler An implementation of the CkjmOutputHandler interface
      */
-    public static String runMetrics(String[] files, CkjmOutputHandler outputHandler) {
+    public static HashMap<String, String> runMetrics(String[] files, CkjmOutputHandler outputHandler) {
+    	HashMap<String, String> result = new HashMap<String, String>();
         ClassMetricsContainer cm = new ClassMetricsContainer();
-        StringBuffer resultBuffer = new StringBuffer();
+        StringBuffer callPairsResultBuffer = new StringBuffer();
+        StringBuffer annotParisResultBuffer = new StringBuffer();
         for (int i = 0; i < files.length; i++){
-        	 String temp = processClass(cm, files[i],files);
-        	 System.out.println(files[i].toString());
+        	 String temp = processClass(cm, files[i],files).get("callParis");
+        	 String annotParistemp= processClass(cm, files[i],files).get("annotParis");
         	 if(!temp.isEmpty()){
-        		 resultBuffer.append(temp);
-        		 resultBuffer.append(",");
+        		 callPairsResultBuffer.append(temp);
+        		 callPairsResultBuffer.append(",");
         	 }
+        	 if(!annotParistemp.isEmpty()) {
+        		 annotParisResultBuffer.append(annotParistemp);
+        		 annotParisResultBuffer.append(",");
+        	 }
+        	 
         }
-        return resultBuffer.toString();
+        result.put("callParis", callPairsResultBuffer.toString());
+        result.put("annotParis", annotParisResultBuffer.toString());
+        return result;
 //        cm.printMetrics(outputHandler);
     }
 

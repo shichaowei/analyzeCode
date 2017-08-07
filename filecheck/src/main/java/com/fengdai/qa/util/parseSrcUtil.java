@@ -13,9 +13,12 @@ import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.taskdefs.PathConvert.MapEntry;
 
 import com.fengdai.ckjm.MetricsFilter;
 import com.fengdai.ckjm.PrintPlainResults;
@@ -61,12 +64,16 @@ public class parseSrcUtil {
 		resultToFile.append(df.format(new Date())+"/n");
 		final File out= new File(outFile);
 		ArrayList<tree<String>> result = new ArrayList<>();
+		HashMap<String, String> annotParis = new HashMap<>();
 		try {
 			final FileOutputStream var6 = new FileOutputStream(out);
 			final PrintPlainResults var7 = new PrintPlainResults(new PrintStream(var6));
-			result = new  LinkToTreeUtil().createTree(MetricsFilter.runMetrics(scanClasses(classesDir), var7));
+			HashMap<String, String> parismap=MetricsFilter.runMetrics(scanClasses(classesDir), var7);
+			result = new  LinkToTreeUtil().createTree(parismap.get("callParis"));
 			var6.close();
-
+			for (String var8:parismap.get("annotParis").split(",")) {
+				annotParis.put(var8.split("的注解")[0],var8.split("的注解")[1]);
+			}
 		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (final IOException e) {
@@ -104,10 +111,17 @@ public class parseSrcUtil {
 				resultToFile.append(temp+"\n");
 			}
 		}else {
-			for(final String temp:changerange){
-				System.out.println(temp);
+			for(String temp:changerange){
+				
 				resultToFile.append(temp+"\n");
+				for(Map.Entry<String, String> entry:annotParis.entrySet()) {
+					if(temp.contains(entry.getKey())) {
+						temp=temp+":的注解为"+entry.getValue();
+					}
+				}
+				System.out.println(temp);
 			}
+			
 		}
 		
 		WriteToFile.appendFile(resultToFile.toString(),"output/影响范围.txt");
@@ -119,8 +133,9 @@ public class parseSrcUtil {
 
 
 	public static void main(String[] args) {
-//		final String filedir="D:\\jenkins\\workspace\\fengdai\\fengdai-core-mqnotify-test";
-		final String filedir="D:\\jenkins\\workspace\\fengdai\\fengdai-core-shop-test";
+		final String filedir="D:\\jenkins\\workspace\\fengdai";
+//		final String filedir="D:\\jenkins\\workspace\\test";
+//		final String filedir="D:\\jenkins\\workspace\\fengdai\\fengdai-core-shop-test";
 //		final String filedir="F:\\test\\代码分析\\analyzeCode\\testbcel\\target";
 //		final String filedir="D:\\jenkins\\workspace\\fengdai\\fengdai-core-activity-test";
 		// TODO Auto-generated method stub

@@ -1,18 +1,17 @@
 package com.wsc.testbcel.testbcel;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.plaf.synth.SynthStyle;
 
 public class TestMain {
 
 	
-	public void test() {
-		Class<?> var = getClass();
-		
-		ClassLoader var2=var.getClassLoader();
-		System.out.println(var2.getSystemClassLoader().getResource("com.wsc.testbcel.testbcel.BaseProgrammer.class").toString());
-		String temp = var2.getResource("com.wsc.testbcel.testbcel.BaseProgrammer.class").toString();
-		System.out.println(temp);
-	}
+//	public void test() {
+//		List<Integer> list = Arrays.asList(1,2,3,4,5,6,7);
+//		list.stream().map((x) -> x*x).forEach(System.out::println);
+//	}
 	
 	public static void main(String argv[]) {
 //		new AProgrammerTest().doBcelPlan("temp");
@@ -28,6 +27,9 @@ public class TestMain {
 //		}
 //		for(String temp:var2)
 //			System.out.println(temp.toString());
-		new TestMain().test();
+//		new TestMain().test();
+		
+		List<Integer> list = Arrays.asList(1,2,3,4,5,6,7);
+		list.stream().map((x) -> x*x).forEach(System.out::println);
 	}
 }

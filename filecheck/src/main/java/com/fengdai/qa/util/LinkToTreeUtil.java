@@ -39,9 +39,9 @@ public class LinkToTreeUtil {
 			String[] var2 = var1.split("被调用于");
 			//处理lambda函数(不包括直接lambda$0，只处理lambda$test$236)
 			//处理com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83----com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法mergeBills
-			if(var2[0].contains("lambda")){
-				throw new RuntimeException("被调用方有lambda，代码还没有做处理");
-			}
+//			if(var2[0].contains("lambda")){
+//				throw new RuntimeException("被调用方有lambda，代码还没有做处理");
+//			}
 			String pattern = ".*的方法lambda\\$[a-zA-Z]+.*";
 			if(var2[1].contains("lambda")&& Pattern.matches(pattern, var2[1])){
 				var2[1]=var2[1].replace("lambda", "").replace("$", "!!").replaceAll("!![0-9]*", "");
@@ -50,9 +50,9 @@ public class LinkToTreeUtil {
 			//处理内部对象有lambda函数 适度扩大范围
 			//com.fengdai.activity.service.impl.ActivityUserGroupListServiceImpl$4的方法lambda$0:java.lang.Stringcom.fengdai.activity.model.ActivityInfo--
 			//-com.fengdai.activity.service.impl.ActivityUserGroupListServiceImpl$4的方法process:
-			if(var2[0].contains("lambda")){
-				throw new RuntimeException("被调用方有lambda，代码还没有做处理");
-			}
+//			if(var2[0].contains("lambda")){
+//				throw new RuntimeException("被调用方有lambda，代码还没有做处理");
+//			}
 			pattern = ".*\\$[0-9]+的方法lambda\\$[0-9]+.*";
 			if(Pattern.matches(pattern, var2[1])){
 				var2[1]=var2[1].split("的方法")[0]+"的方法process:";

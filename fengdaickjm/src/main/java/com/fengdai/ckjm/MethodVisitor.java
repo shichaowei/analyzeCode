@@ -18,18 +18,25 @@ package com.fengdai.ckjm;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JCheckBox;
 
+import org.apache.bcel.Const;
 import org.apache.bcel.Constants;
+import org.apache.bcel.classfile.Attribute;
+import org.apache.bcel.classfile.BootstrapMethod;
+import org.apache.bcel.classfile.BootstrapMethods;
 import org.apache.bcel.classfile.ClassFormatException;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.generic.AnnotationEntryGen;
 import org.apache.bcel.generic.ArrayInstruction;
 import org.apache.bcel.generic.CHECKCAST;
 import org.apache.bcel.generic.CodeExceptionGen;
 import org.apache.bcel.generic.ConstantPoolGen;
 import org.apache.bcel.generic.ConstantPushInstruction;
+import org.apache.bcel.generic.ElementValuePairGen;
 import org.apache.bcel.generic.EmptyVisitor;
 import org.apache.bcel.generic.FieldInstruction;
 import org.apache.bcel.generic.INSTANCEOF;
@@ -84,6 +91,21 @@ class MethodVisitor extends EmptyVisitor {
 				if (!visitInstruction(i))
 					i.accept(this);
 			}
+			if(mg.getAnnotationEntries().length !=0) {
+				for(AnnotationEntryGen annot:mg.getAnnotationEntries()) {
+					List<ElementValuePairGen> tElementValuePairGens = annot.getValues();
+					for(ElementValuePairGen var : tElementValuePairGens) {
+						
+						try {
+														System.out.println(mg.getClassName()+"的方法"+ mg.getName()+"的注解"+var.getElementNameValuePair().getValue());
+							cv.setAnnotPairs(mg.getClassName() + "的方法" + mg.getName() + "的注解" + var.getElementNameValuePair().getValue());
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+						
+					}
+				}
+			}
 			updateExceptionHandlers();
 		}
 	}
@@ -119,6 +141,11 @@ class MethodVisitor extends EmptyVisitor {
 	/** Method invocation. */
 	@Override
 	public void visitInvokeInstruction(InvokeInstruction i) {
+		
+		
+		
+		
+		
 		Type[] argTypes = i.getArgumentTypes(cp);
 		StringBuffer diaoyongMethodParamsStr = new StringBuffer();
 		for (int j = 0; j < argTypes.length; j++)
@@ -127,22 +154,71 @@ class MethodVisitor extends EmptyVisitor {
 		for (Type temp : diaoyongArgTypes)
 			diaoyongMethodParamsStr.append(temp.toString() + "-");
 		cv.registerCoupling(i.getReturnType(cp));
-		String classname = i.getClassName(cp);
+		String beidiaoyongclassname = i.getClassName(cp);
 		
-		System.out.println("调用的方法所在的类（子类）" + classname + "方法" + i.getMethodName(cp));
-		System.out.println("调用方class名称" + cv.getJavaClass().getClassName());
-		System.out.println("调用方父class名称" + cv.getJavaClass().getSuperclassName());
-		if (classname.contains("com.fengdai.finance.model.ChannelSettlement")
-				&& i.getMethodName(cp).contains("getSettlementType")&&mg.getName().contains("lambda$0")) {
-			System.out.println("com.fengdai.activity.form.DitchForm");
-		}
+//		System.out.println("调用的方法所在的类（子类）" + beidiaoyongclassname + "方法" + i.getMethodName(cp));
+//		System.out.println("调用方class名称" + cv.getJavaClass().getClassName());
+//		System.out.println("调用方父class名称" + cv.getJavaClass().getSuperclassName());
+//		//&&mg.getName().contains("lambda$0")
+//		System.out.println(mg.getName());
+//		if (beidiaoyongclassname.contains("accept")&& i.getMethodName(cp).contains("accept")&&cv.getJavaClass().getClassName().contains("com.fengdai.shop.service.impl.SettlementStrategyRelateShopServiceImpl$1")) {
+//			System.out.println("com.fengdai.activity.form.DitchForm");
+//		}
 		StringBuffer realBeiDiaoMethodParamsStr = new StringBuffer();
+		//处理lambda
+		String beidiaoyongMethod="";
+    	if(!i.getMethodName(cp).equals("accept")){
+    		beidiaoyongMethod=i.getMethodName(cp);
+    	}
+    		
+    	if(i.getOpcode() == Const.INVOKEDYNAMIC){
+//	    	System.out.println(cp.getConstant(i.getIndex()));
+//	    	System.out.println(cv.getJavaClass());
+//    		System.out.println(cv.getJavaClass().getAttributes()[1].getClass().getName());
+    		BootstrapMethods temp1= null;
+    		for(Attribute var:cv.getJavaClass().getAttributes()) {
+//    			System.out.println(var.getClass().getName());
+    			if(var.getClass().getName().contains("BootstrapMethods"))
+    				temp1 = (BootstrapMethods)var;
+    		}
+	    
+	    	BootstrapMethod bootstrapMethod = temp1.getBootstrapMethods()[0];
+	    	
+	    	for(int ss:bootstrapMethod.getBootstrapArguments()){
+//	    		System.out.println(cp.getConstantPool().constantToString (cp.getConstant(ss)));
+	    	
+	    	}
+	    	for(String var:bootstrapMethod.getArgumentsString(temp1.getConstantPool())){
+//	    		System.out.println(var);
+	    		if(var.contains("invokeStatic")&&var.contains("lambda$")){
+	    			String[] lambdaDetail= var.split(" ");
+//	    			System.out.println("lambda类与方法名："+lambdaDetail[1].substring(0, lambdaDetail[1].indexOf(".lambda"))+":"+lambdaDetail[1].substring(lambdaDetail[1].indexOf("lambda")));
+	    			beidiaoyongMethod=lambdaDetail[1];
+//	    			System.out.println("lambda参数：");
+	    			for(int j=2;j<lambdaDetail.length;j++){
+	    				
+	    				String[] methodtemp=lambdaDetail[j].replace("(", "").replaceAll("\\).*", "").replace("Lcom/", "com/").replace("/", ".").split(";");
+	    				for(String methodpara:methodtemp) {
+//	    					System.out.println(methodpara);
+	    					realBeiDiaoMethodParamsStr.append( methodpara+ "-");
+	    				}
+	    			}
+	    			beidiaoyongclassname=lambdaDetail[1].substring(0, lambdaDetail[1].indexOf(".lambda"));
+	    			beidiaoyongMethod=lambdaDetail[1].substring(lambdaDetail[1].indexOf("lambda"));
+	    			
+	    		}
+	    	}
+	    	
+    	}
+		
+		
+		
 		try {
 			JavaClass superclass = cv.getJavaClass().getSuperClass();
 			// 先判断调用的方法是父类的还是自己的方法,如果都不是即为调用的第三方方法 调用的有可能不是父类是爷爷类 所以循环查找 知道找到object
-			if (cv.getJavaClass().getClassName().contains(classname)|| cv.getJavaClass().getSuperclassName().contains(classname)) {
+			if (cv.getJavaClass().getClassName().contains(beidiaoyongclassname)|| cv.getJavaClass().getSuperclassName().contains(beidiaoyongclassname)) {
 				//如果父类是object 表明这个类调用的方法就是自己内部的方法
-				if(superclass.getClassName().equals("java.lang.Object")) {
+				if(superclass.getClassName().equals("java.lang.Object")&&realBeiDiaoMethodParamsStr.length()==0) {
 					for (Type type : i.getArgumentTypes(cp)) {
 						realBeiDiaoMethodParamsStr.append(type.toString() + "-");
 					}
@@ -166,7 +242,7 @@ class MethodVisitor extends EmptyVisitor {
 											methodParams.add(type);
 										}
 										if (supermethodParams.equals(methodParams)) {
-											classname = superclass.getClassName();
+											beidiaoyongclassname = superclass.getClassName();
 											for (Type temp : supermethodParams)
 												realBeiDiaoMethodParamsStr.append(temp.toString() + "-");
 											break;
@@ -232,7 +308,7 @@ class MethodVisitor extends EmptyVisitor {
 														methodParams.add(type);
 													}
 													if (supermethodParams.equals(methodParams)) {
-														classname = superclass.getClassName();
+														beidiaoyongclassname = superclass.getClassName();
 														for (Type temp : supermethodParams)
 															realBeiDiaoMethodParamsStr.append(temp.toString() + "-");
 														break;
@@ -279,7 +355,7 @@ class MethodVisitor extends EmptyVisitor {
 //		System.out.println("调用类的方法名"+mg.getName());
 		cv.registerMethodInvocation(i.getClassName(cp), i.getMethodName(cp), argTypes);
 		// 被调用的类 被调用类的方法名 调用类的方法名
-		cv.registerMethodInvocation(classname, i.getMethodName(cp) + ":" + realBeiDiaoMethodParamsStr,mg.getName() + ":" + diaoyongMethodParamsStr);
+		cv.registerMethodInvocation(beidiaoyongclassname, beidiaoyongMethod + ":" + realBeiDiaoMethodParamsStr,mg.getName() + ":" + diaoyongMethodParamsStr);
 	}
 
 	/** Visit an instanceof instruction. */

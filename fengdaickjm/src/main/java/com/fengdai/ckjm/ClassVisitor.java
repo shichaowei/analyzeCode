@@ -133,7 +133,14 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
     	return result.toString().replace("[", "").replace("]", "").replace(" ", "");
     }
 	
+	
+	public  String getAnnoParisresult(){
+//		System.out.println(result.toString().replace("[", "").replace("]", "").replace(" ", ""));
+		return AnnotResult.toString().replace("[", "").replace("]", "").replace(" ", "");
+	}
+	
 	public HashSet<String> result = new HashSet<String>();
+	public HashSet<String> AnnotResult = new HashSet<String>();
 	/** Add a given class to the classes we are coupled to */
 	public void registerCoupling(String className) {
 		//原版
@@ -184,10 +191,18 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 	void registerMethodInvocation(String className,String beidiaoyongmethodName,String diaoyongmethodname) {
 		//&& ClassMetrics.isfengdaiclass(className)||ClassMetrics.isfundsclass(className)
 		if ((MetricsFilter.isJdkIncluded() || !ClassMetrics.isJdkClass(className)) ) {
-//			System.out.println(String.format("%s的方法%s被调用于%s的方法%s",className,beidiaoyongmethodName,myClassName,diaoyongmethodname));
-			if(!(className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname)) && !diaoyongmethodname.contains("clinit"))
-					result.add(String.format("%s的方法%s被调用于%s的方法%s",className,beidiaoyongmethodName,myClassName,diaoyongmethodname));
+			
+			//去除迭代判断className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname) 在构造树的过程中使用最多深度20做处理
+			if(!(className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname))&&!diaoyongmethodname.contains("clinit")) {
+//				System.out.println(String.format("%s的方法%s被调用于%s的方法%s",className,beidiaoyongmethodName,myClassName,diaoyongmethodname));
+				result.add(String.format("%s的方法%s被调用于%s的方法%s",className,beidiaoyongmethodName,myClassName,diaoyongmethodname));
+			}
 		}
+	}
+	
+	//被调用的类 被调用类的方法名 调用类的方法名 
+	void setAnnotPairs(String pairDetail) {
+		AnnotResult.add(pairDetail);
 	}
 
 	/** Called when a field access is encountered. */

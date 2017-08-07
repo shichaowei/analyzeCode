@@ -20,6 +20,7 @@ package org.apache.bcel.classfile;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.bcel.Const;
@@ -140,6 +141,32 @@ public class BootstrapMethod implements Cloneable {
         }
         return buf.toString();
     }
+    
+    
+    public final ArrayList<String> getArgumentsString(final ConstantPool constant_pool) {
+		ArrayList<String> result = new ArrayList<>();
+		final int num_bootstrap_arguments = bootstrap_arguments.length;
+		if (num_bootstrap_arguments > 0) {
+			for (int i = 0; i < num_bootstrap_arguments; i++) {
+				result.add(constant_pool.constantToString(constant_pool.getConstant(bootstrap_arguments[i])));
+			}
+		}
+		return result;
+	}
+	
+	public final ArrayList<Constant> getArguments(final ConstantPool constant_pool) {
+		ArrayList<Constant> result = new ArrayList<>();
+		final int num_bootstrap_arguments = bootstrap_arguments.length;
+		if (num_bootstrap_arguments > 0) {
+			for (int i = 0; i < num_bootstrap_arguments; i++) {
+//				result.add(constant_pool.constantToString(constant_pool.getConstant(bootstrap_arguments[i])));
+				result.add(constant_pool.getConstant(bootstrap_arguments[i]));
+			}
+		}
+		return result;
+	}
+
+	
 
     /**
      * Dump object to file stream in binary format.
