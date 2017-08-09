@@ -128,19 +128,29 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 			methods[i].accept(this);
 	}
 
+	
+	
+	public HashSet<String> result = new HashSet<String>();
+	public HashSet<String> AnnotResult = new HashSet<String>();
 	public  String getresult(){
-//		System.out.println(result.toString().replace("[", "").replace("]", "").replace(" ", ""));
     	return result.toString().replace("[", "").replace("]", "").replace(" ", "");
     }
 	
 	
+	//被调用的类 被调用类的方法名 调用类的方法名 
+		void setAnnotPairs(String pairDetail) {
+			AnnotResult.add(pairDetail+"@@@");
+		}
+		
 	public  String getAnnoParisresult(){
-//		System.out.println(result.toString().replace("[", "").replace("]", "").replace(" ", ""));
-		return AnnotResult.toString().replace("[", "").replace("]", "").replace(" ", "");
+		
+		StringBuffer stringBuffer = new StringBuffer();
+		for(String var:AnnotResult) {
+			stringBuffer.append(var);
+		}
+		return stringBuffer.toString();
 	}
 	
-	public HashSet<String> result = new HashSet<String>();
-	public HashSet<String> AnnotResult = new HashSet<String>();
 	/** Add a given class to the classes we are coupled to */
 	public void registerCoupling(String className) {
 		//原版
@@ -200,10 +210,7 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 		}
 	}
 	
-	//被调用的类 被调用类的方法名 调用类的方法名 
-	void setAnnotPairs(String pairDetail) {
-		AnnotResult.add(pairDetail);
-	}
+	
 
 	/** Called when a field access is encountered. */
 	@Override

@@ -1,5 +1,6 @@
 package com.fengdai.qa.parsrctest;
 
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class TestString {
@@ -77,12 +78,20 @@ public class TestString {
 		String content = "com.fengdai.finance.enums.SettlementType的方法name:被调用于com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83";
 //		String content = "com.fengdai.finance.service.impl.BizLoanBillServiceImpl的方法lambda$mergeBills$83";
 //		test(content);
-		System.out.println("com/fengdai/shop/service/impl/ShopOrderHandleServiceImpl.lambda$0:(Lcom/fengdai/finance/model/ChannelSettlement;)Z".replace("(", "").replaceAll("\\).*", "").replace("Lcom/", "com/").replace("/", "."));
-		String className="org.slf4j.LoggerFactory";
-		String beidiaoyongmethodName="getLogger:java.lang.Class-";
-		String diaoyongmethodname="<clinit>:";
-		String myClassName="com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl";
-		System.out.println(!(className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname)) && !diaoyongmethodname.contains("clinit"));
+//		System.out.println("com/fengdai/shop/service/impl/ShopOrderHandleServiceImpl.lambda$0:(Lcom/fengdai/finance/model/ChannelSettlement;)Z".replace("(", "").replaceAll("\\).*", "").replace("Lcom/", "com/").replace("/", "."));
+//		String className="org.slf4j.LoggerFactory";
+//		String beidiaoyongmethodName="getLogger:java.lang.Class-";
+//		String diaoyongmethodname="<clinit>:";
+//		String myClassName="com.fengdai.shop.service.impl.ShopOrderHandleServiceImpl";
+//		System.out.println(!(className.equals(myClassName) && beidiaoyongmethodName.equals(diaoyongmethodname)) && !diaoyongmethodname.contains("clinit"));
+//		
+		HashMap<String, String> annotParis = new HashMap<>();
+		String temp ="com.fengdai.user.resource.UserAgentResource的方法getUserPage的注解/userPage,com.fengdai.user.resource.UserAgentResource的方法addUser的注解/addUser,com.fengdai.user.resource.UserAgentResource的方法existByPhone的注解/exist/{phone}***com.fengdai.user.resource.UserQuickApplyResource的方法save的注解{application/json}***";
+		for (String var8:temp.split("\\*\\*\\*")) {
+			System.out.println(var8);
+			annotParis.put(var8.split("的注解")[0],var8.split("的注解")[1]);
+		}
+		
 		//		String pattern = ".*\\$[0-9]+的方法lambda\\$[0-9]+.*";
 //		boolean isMatch = Pattern.matches(pattern, content);
 //		System.out.println("字符串中是否包含了 'runoob' 子字符串? " + isMatch);

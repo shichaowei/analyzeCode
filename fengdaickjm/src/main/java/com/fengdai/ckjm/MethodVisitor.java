@@ -97,10 +97,10 @@ class MethodVisitor extends EmptyVisitor {
 					for(ElementValuePairGen var : tElementValuePairGens) {
 						
 						try {
-														System.out.println(mg.getClassName()+"的方法"+ mg.getName()+"的注解"+var.getElementNameValuePair().getValue());
+//							System.out.println(mg.getClassName()+"的方法"+ mg.getName()+"的注解"+var.getElementNameValuePair().getValue());
 							cv.setAnnotPairs(mg.getClassName() + "的方法" + mg.getName() + "的注解" + var.getElementNameValuePair().getValue());
 						} catch (Exception e) {
-							// TODO: handle exception
+							System.out.println(e);
 						}
 						
 					}

@@ -30,6 +30,11 @@ public class LinkToTreeUtil {
 		ArrayList<element> varlist = new ArrayList<>();
 		String[] temps = temp.split(",");
 		for (String var1 : temps) {
+			
+			
+			
+			
+//			System.out.println(var1);
 			//不做处理
 			//内部类  com.fengdai.activity.constant.ActivityBizConstant$DicKey
 			//内部对象 com.fengdai.activity.service.impl.CouponsDistributeServiceImpl$1
@@ -91,11 +96,17 @@ public class LinkToTreeUtil {
 			righteles.add(var2[1]);
 			element ele1 = new element(var2[0], var2[1]);
 			varlist.add(ele1);
+		
+		
 		}
+		
+		
 		StringBuffer tempDealed = new StringBuffer();
 		for(element var:varlist) {
 			tempDealed.append(var.getleft()+"被调用于"+var.getright()+"\n");
 		}
+		
+		
 		WriteToFile.clearWriteFile(tempDealed.toString(), "output/处理后的调用关系.txt");
 		// 拿到根节点
 		for (String righttest : righteles) {

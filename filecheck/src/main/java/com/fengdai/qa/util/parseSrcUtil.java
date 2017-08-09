@@ -68,10 +68,13 @@ public class parseSrcUtil {
 		try {
 			final FileOutputStream var6 = new FileOutputStream(out);
 			final PrintPlainResults var7 = new PrintPlainResults(new PrintStream(var6));
-			HashMap<String, String> parismap=MetricsFilter.runMetrics(scanClasses(classesDir), var7);
+			HashMap<String, String> parismap=new MetricsFilter().runMetrics(scanClasses(classesDir), var7);
 			result = new  LinkToTreeUtil().createTree(parismap.get("callParis"));
 			var6.close();
-			for (String var8:parismap.get("annotParis").split(",")) {
+			WriteToFile.clearWriteFile(parismap.get("annotParis").toString(), "output/注解对应关系.txt");
+			for (String var8:parismap.get("annotParis").split("@@@")) {
+				logger.logInfo(var8);
+//				System.out.println(var8);
 				annotParis.put(var8.split("的注解")[0],var8.split("的注解")[1]);
 			}
 		} catch (final FileNotFoundException e) {
@@ -133,9 +136,9 @@ public class parseSrcUtil {
 
 
 	public static void main(String[] args) {
-		final String filedir="D:\\jenkins\\workspace\\fengdai";
+//		final String filedir="D:\\jenkins\\workspace\\fengdai";
 //		final String filedir="D:\\jenkins\\workspace\\test";
-//		final String filedir="D:\\jenkins\\workspace\\fengdai\\fengdai-core-shop-test";
+		final String filedir="D:\\jenkins\\workspace\\fengdai\\fengdai-core-shop-test";
 //		final String filedir="F:\\test\\代码分析\\analyzeCode\\testbcel\\target";
 //		final String filedir="D:\\jenkins\\workspace\\fengdai\\fengdai-core-activity-test";
 		// TODO Auto-generated method stub
