@@ -20,6 +20,7 @@ import org.apache.bcel.classfile.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -121,42 +122,43 @@ public class MetricsFilter {
 		final StringBuffer callPairsResultBuffer = new StringBuffer();
 		final StringBuffer annotParisResultBuffer = new StringBuffer();
 		HashMap<String, String> result = new HashMap<String, String>();
-		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
+		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
 		for (int index = 0; index < files.length; index++) {
 			final int i = index;
-			fixedThreadPool.execute(new Runnable() {
-				public void run() {
-					synchronized (this) {
-						HashMap<String, String> resultmap = processClass(cm, files[i], files);
-						String temp = resultmap.get("callParis");
-						String annotParistemp = resultmap.get("annotParis");
-
-						if (!annotParistemp.isEmpty()) {
-							annotParisResultBuffer.append(annotParistemp);
-						}
-						if (!temp.isEmpty()) {
-							callPairsResultBuffer.append(temp);
-							callPairsResultBuffer.append(",");
+			try {
+				fixedThreadPool.submit(new Runnable() {
+					public void run() {
+						synchronized (this) {
+							HashMap<String, String> resultmap = processClass(cm, files[i], files);
+							String temp = resultmap.get("callParis");
+							String annotParistemp = resultmap.get("annotParis");
+							if (!annotParistemp.isEmpty()) {
+								annotParisResultBuffer.append(annotParistemp);
+							}
+							if (!temp.isEmpty()) {
+								callPairsResultBuffer.append(temp+",");
+							}
 						}
 					}
-				}
-			});
+				}).get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		fixedThreadPool.shutdown();
 		while (true) {
 			if (fixedThreadPool.isTerminated()) {
-
 				result.put("annotParis", annotParisResultBuffer.toString());
 				result.put("callParis", callPairsResultBuffer.toString());
 				break;
 			}
 
 		}
-
-		String tmp = result.toString();
-
 		return result;
-		// cm.printMetrics(outputHandler);
 	}
 
 }
