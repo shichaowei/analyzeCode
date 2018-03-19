@@ -78,6 +78,14 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 		cm = cmap.getMetrics(myClassName);
 		allClassfiles=Classesfiles;
 	}
+	
+	public ClassVisitor(JavaClass jc, String[] Classesfiles) {
+		visitedClass = jc;
+		cp = new ConstantPoolGen(visitedClass.getConstantPool());
+		myClassName = jc.getClassName();
+		cm = cmap.getMetrics(myClassName);
+		allClassfiles=Classesfiles;
+	}
 
 	/** Return the class's metrics container. */
 	public ClassMetrics getMetrics() {
@@ -110,7 +118,7 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
 //			System.out.println(jc.getSuperClasses().length);
 			cm.setDit(jc.getSuperClasses().length);
 		} catch (ClassNotFoundException ex) {
-			System.err.println("Error obtaining all superclasses of " + jc);
+			System.err.println("Error obtaining all superclasses of " + jc.getClassName());
 		}
 		registerCoupling(super_name);
 

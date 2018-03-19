@@ -14,9 +14,9 @@ import ch.qos.logback.core.util.StatusPrinter;
 public class LogUtil {
 	private Logger log;
 	//用來解決多个logback 不知道取那个logbcack文件
-	static {
+	/*static {
 		load("F:\\test\\代码分析\\analyzeCode\\sourcecheckWeb\\src\\main\\resources\\logback.xml");
-	}
+	}*/
 	public LogUtil(final Class<?> loggerName) {
 
 		log = LoggerFactory.getLogger(loggerName);

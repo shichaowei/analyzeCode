@@ -16,9 +16,15 @@
 
 package com.fengdai.ckjm;
 
+import org.apache.bcel.Repository;
 import org.apache.bcel.classfile.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -65,6 +71,7 @@ public class MetricsFilter {
 	 * @param files
 	 *            所有的class文件路径
 	 * @param map<调用链：链式内容；方法与注解：链式内容>
+	 * @clspec 处理的class文件path
 	 * @return
 	 */
 	private HashMap<String, String> processClass(ClassMetricsContainer cm, String clspec, String[] files) {
@@ -82,6 +89,15 @@ public class MetricsFilter {
 		// System.err.println("Error loading " + clspec + " from " + jar + ": " + e);
 		// }
 		// } else {
+		//把所有的class文件入仓库，防止父类找不到
+		for (String string : files) {
+			try {
+				JavaClass jcvar = new ClassParser(string).parse();
+				jcvar.getRepository().storeClass(jcvar);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 		try {
 			jc = new ClassParser(clspec).parse();
 			// System.out.println(jc.toString());
@@ -89,6 +105,7 @@ public class MetricsFilter {
 			// System.out.println("com.fengdai.base.form.AbstractPageForm");
 			// }
 		} catch (IOException e) {
+//			e.printStackTrace();
 			System.err.println("Error loading " + clspec + ": " + e);
 		} catch (ClassFormatException e) {
 			System.err.println("Error loading " + clspec + ": " + e);
@@ -117,12 +134,38 @@ public class MetricsFilter {
 	 *            An implementation of the CkjmOutputHandler interface
 	 */
 	public HashMap<String, String> runMetrics(final String[] files, CkjmOutputHandler outputHandler) {
-
 		final ClassMetricsContainer cm = new ClassMetricsContainer();
 		final StringBuffer callPairsResultBuffer = new StringBuffer();
 		final StringBuffer annotParisResultBuffer = new StringBuffer();
 		HashMap<String, String> result = new HashMap<String, String>();
 		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
+		for (int index = 0; index < files.length; index++) {
+			try {
+				File file1 = new File(files[index]); 
+				URLClassLoader classloader = (URLClassLoader) ClassLoader.getSystemClassLoader(); 
+				java.lang.reflect.Method add = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] { URL.class }); 
+				add.setAccessible(true); 
+				add.invoke(classloader, new Object[] { file1.toURI().toURL() });
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
 		for (int index = 0; index < files.length; index++) {
 			final int i = index;
 			try {

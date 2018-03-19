@@ -13,7 +13,8 @@ public class TestMain {
 //		list.stream().map((x) -> x*x).forEach(System.out::println);
 //	}
 	
-	public static void main(String argv[]) {
+	
+	public static void main(String[] argv) {
 //		new AProgrammerTest().doBcelPlan("temp");
 //		new AProgrammerTest("sddfdfd").doBcelPlan("temp");
 //		String var1="com.fengdai.activity.service.impl.ActivityUserGroupListServiceImpl$5的方法<init>:com.fengdai.activity.service.impl.ActivityUserGroupListServiceImpljava.lang.Objectjava.lang.String被调用于com.fengdai.activity.service.impl.ActivityUserGroupListServiceImpl的方法clean:java.lang.String";

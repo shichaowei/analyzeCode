@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.text.StrBuilder;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,15 @@ public class LinkToTreeServiceImpl implements LinkToTreeService{
 		//		System.out.println(temp); //由于tmep太大，不能直接读取到屏幕 会导致IO傻逼
 		logger.logDebug("调用关系");
 //		logger.logDebug(temp);
-		WriteToFile.clearWriteFile(temp.replace(",", "\n"), System.getProperty("parse.webapp")+"output/原始调用关系.txt");
+		StringBuffer callparisBuffer = new StringBuffer();
+		callparisBuffer.append("digraph pic1 { \nedge [fontname=\"FangSong\"];node [shape=box, fontname=\"FangSong\" size=\"20,20\"];\n");
+		for (String var : temp.split(",")) {
+			callparisBuffer.append("\""+var.split("被调用于")[1]+"\"->\""+var.split("被调用于")[0]+"\"\n");
+		}
+		callparisBuffer.append("}");
+		System.err.println(callparisBuffer.toString());
+		WriteToFile.clearWriteFile(callparisBuffer.toString(), "E:/测试代码/output/callpairs.gv");
+		WriteToFile.clearWriteFile(temp.replace(",", "\n"), "E:/测试代码/output/原始调用关系.txt");
 
 		ArrayList<String> lefteles = new ArrayList<>();
 		ArrayList<String> righteles = new ArrayList<>();
@@ -134,7 +143,7 @@ public class LinkToTreeServiceImpl implements LinkToTreeService{
 
 		
 		
-		WriteToFile.clearWriteFile(tempDealed.toString(), System.getProperty("parse.webapp")+"output/处理后的调用关系.txt");
+		WriteToFile.clearWriteFile(tempDealed.toString(), "E:/测试代码/output/处理后的调用关系.txt");
 		// 拿到根节点
 		for (String righttest : righteles) {
 			// System.out.println(righttest);
@@ -148,7 +157,7 @@ public class LinkToTreeServiceImpl implements LinkToTreeService{
 			//写入rootnodes文件
 			String rootTemp="";
 			logger.logDebug("根节点为:");
-			FileWriter fw = new FileWriter(System.getProperty("parse.webapp")+"output/rootnodes.txt");
+			FileWriter fw = new FileWriter("E:/测试代码/output/rootnodes.txt");
 			for (String root : rootelestemp){
 				rooteles.add(root);
 				logger.logDebug(root);
